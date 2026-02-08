@@ -4,98 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Love Link ❤️</title>
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;user-select:none}
-
-body{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-  transition:0.6s;
-}
+/* =========================
+   GLOBAL STYLES
+========================= */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;user-select:none;touch-action:none}
+body{height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden;transition:0.6s}
 
 /* THEMES */
-body.pink{background:linear-gradient(135deg,#ff9a9e,#fad0c4)}
-body.soft{background:linear-gradient(135deg,#fbc2eb,#a6c1ee)}
+body.pink{background:linear-gradient(135deg,#ff9a9e,#fad0c4);color:#000}
+body.soft{background:linear-gradient(135deg,#fbc2eb,#a6c1ee);color:#000}
 body.night{background:linear-gradient(135deg,#141e30,#243b55);color:#fff}
 body.dark{background:#000;color:#fff}
 body.white{background:#fff;color:#000}
 
 /* SCREENS */
-.screen{
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-}
+.screen{display:none;flex-direction:column;align-items:center;text-align:center;padding:20px;width:100%;max-width:480px}
 .active{display:flex}
 
-input,select,button{
-  padding:12px 20px;
-  margin:8px;
-  border-radius:25px;
-  border:none;
-  font-size:16px;
-}
+/* INPUTS & SELECTS */
+input,select{padding:12px 20px;margin:8px;width:90%;border-radius:25px;border:none;font-size:16px}
 
 /* HEART BUTTON */
-.heart-btn{
-  font-size:110px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  animation:beat 1.4s infinite;
-  color:#ffd6e7;
-}
-.heart-btn:hover{ text-shadow:0 0 30px hotpink }
-.heart-btn.active{ color:red }
+.heart-btn{font-size:110px;background:none;border:none;cursor:pointer;animation:beat 1.4s infinite;color:#ffd6e7;margin-top:20px}
+.heart-btn:hover{text-shadow:0 0 30px hotpink}
+.heart-btn.active{color:red}
 
-@keyframes beat{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.25)}
-  100%{transform:scale(1)}
-}
+/* HEART BEAT ANIMATION */
+@keyframes beat{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
 
 /* NO BUTTON */
-#no{
-  position:absolute;
-  background:#ccc;
-}
+#no{position:absolute;background:#ccc;border-radius:50%;width:80px;height:80px;display:flex;justify-content:center;align-items:center;font-size:36px;cursor:pointer}
 
 /* HEART RAIN */
-.heart{
-  position:fixed;
-  top:-20px;
-  font-size:20px;
-  animation:fall linear forwards;
-}
-@keyframes fall{
-  to{transform:translateY(110vh);opacity:0}
-}
+.heart{position:fixed;top:-20px;font-size:20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh);opacity:0}}
 
 /* FOOTER */
-.footer{
-  position:fixed;
-  bottom:15px;
-  display:flex;
-  gap:10px;
+.footer{position:fixed;bottom:15px;display:flex;gap:10px;width:90%;justify-content:center;}
+
+/* LINK STYLING */
+a{color:inherit;text-decoration:none;font-size:16px;word-break:break-all}
+
+/* MOBILE-FIRST SMOOTHNESS */
+@media(max-width:480px){
+  .heart-btn{font-size:80px}
+  input,select{font-size:14px}
 }
 </style>
 </head>
-
 <body class="pink">
 
-<!-- BUILDER SCREEN -->
+<!-- =========================
+     SENDER PAGE
+========================= -->
 <div class="screen active" id="builder">
-  <h2>Create Your Love Link ❤️</h2>
-
+  <h2>Create Your ❤️ Link</h2>
   <input id="nameInput" placeholder="Enter their name">
   <input id="msgInput" placeholder="Enter your message">
-
   <select id="themeInput">
     <option value="pink">Romantic Pink</option>
     <option value="soft">Soft Emotional</option>
@@ -103,7 +69,6 @@ input,select,button{
     <option value="dark">Dark Love</option>
     <option value="white">Minimal White</option>
   </select>
-
   <select id="musicInput">
     <option value="music1.mp3">Romantic Piano</option>
     <option value="music2.mp3">Emotional Strings</option>
@@ -111,62 +76,101 @@ input,select,button{
     <option value="music4.mp3">Lo-Fi Love</option>
     <option value="music5.mp3">Heartbeat Mood</option>
   </select>
-
-  <button onclick="generateLink()">💗 Generate Love Link</button>
-
+  <button id="koreanHeartBtn" onclick="generateLink()">💖</button>
   <p id="linkBox"></p>
 </div>
 
-<!-- LOVE SCREEN -->
+<!-- =========================
+     RECEIVER PAGE
+========================= -->
 <div class="screen" id="love">
   <h1 id="title">Hey ❤️</h1>
   <p id="message">Will you be mine?</p>
-
-  <div style="position:relative;height:150px;width:260px">
+  <div style="position:relative;height:150px;width:260px;margin-top:20px">
     <button class="heart-btn" onclick="yes()">♡</button>
-    <button id="no">NO</button>
+    <button id="no">❌</button>
   </div>
 </div>
 
+<!-- FOOTER ❤️ -->
 <div class="footer">
-  <button onclick="share()">WhatsApp</button>
-  <button onclick="reset()">Reset</button>
+  <button onclick="share()">❤️</button>
+  <button onclick="reset()">❤️</button>
 </div>
 
+<!-- AUDIO -->
 <audio id="player"></audio>
 
 <script>
-const params=new URLSearchParams(location.search);
+/* =========================
+   URL PARAMETERS
+========================= */
+const params = new URLSearchParams(location.search);
 
-/* IF OPENED VIA LINK → SHOW LOVE PAGE */
+/* DOM ELEMENTS */
+const builder = document.getElementById("builder");
+const love = document.getElementById("love");
+const nameInput = document.getElementById("nameInput");
+const msgInput = document.getElementById("msgInput");
+const themeInput = document.getElementById("themeInput");
+const musicInput = document.getElementById("musicInput");
+const linkBox = document.getElementById("linkBox");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+const player = document.getElementById("player");
+const no = document.getElementById("no");
+
+/* =========================
+   EMBEDDED MUSIC (BASE64)
+========================= */
+const musicFiles = {
+  "music1.mp3":"data:audio/mp3;base64,BASE64_MUSIC_1",
+  "music2.mp3":"data:audio/mp3;base64,BASE64_MUSIC_2",
+  "music3.mp3":"data:audio/mp3;base64,BASE64_MUSIC_3",
+  "music4.mp3":"data:audio/mp3;base64,BASE64_MUSIC_4",
+  "music5.mp3":"data:audio/mp3;base64,BASE64_MUSIC_5"
+};
+
+/* =========================
+   RECEIVER PAGE LOGIC
+========================= */
 if(params.get("name")){
   builder.classList.remove("active");
   love.classList.add("active");
 
-  document.body.className=params.get("theme")||"pink";
-  title.innerText=params.get("name")+" ❤️";
-  message.innerText=decodeURIComponent(params.get("msg")||"Will you be mine?");
-  player.src=params.get("music")||"music1.mp3";
+  document.body.className = params.get("theme") || "pink";
+  title.innerText = params.get("name")+" ❤️";
+  message.innerText = decodeURIComponent(params.get("msg")||"Will you be mine?");
+
+  const selectedMusic = params.get("music") || "music1.mp3";
+  player.src = musicFiles[selectedMusic];
 }
 
-/* GENERATE LINK */
+/* =========================
+   SENDER PAGE LOGIC
+========================= */
 function generateLink(){
-  const n=nameInput.value||"Someone";
-  const m=encodeURIComponent(msgInput.value||"Will you be mine?");
-  const t=themeInput.value;
-  const mu=musicInput.value;
+  const n = nameInput.value || "Someone";
+  const m = encodeURIComponent(msgInput.value || "Will you be mine?");
+  const t = themeInput.value;
+  const mu = musicInput.value;
 
-  const link=`${location.origin}${location.pathname}?name=${encodeURIComponent(n)}&msg=${m}&theme=${t}&music=${mu}`;
-  linkBox.innerHTML=`<a href="${link}" target="_blank">${link}</a>`;
+  const link = `${location.origin}${location.pathname}?name=${encodeURIComponent(n)}&msg=${m}&theme=${t}&music=${mu}`;
+  linkBox.innerHTML = `<a href="${link}" target="_blank">💖 Click to Send 💖</a>`;
+  navigator.clipboard.writeText(link).then(()=>console.log("Link copied!"));
 }
 
-/* NO RUNAWAY */
+/* =========================
+   NO BUTTON FUN
+========================= */
 no.addEventListener("mouseover",()=>{
   no.style.left=Math.random()*70+"%";
   no.style.top=Math.random()*70+"%";
 });
 
-/* YES */
+/* =========================
+   YES BUTTON ❤️
+========================= */
 function yes(){
   document.querySelector(".heart-btn").classList.add("active");
   player.play();
@@ -174,7 +178,9 @@ function yes(){
   heartRain();
 }
 
-/* HEART RAIN */
+/* =========================
+   HEART RAIN EFFECT
+========================= */
 function heartRain(){
   for(let i=0;i<40;i++){
     const h=document.createElement("div");
@@ -187,20 +193,31 @@ function heartRain(){
   }
 }
 
-/* SHARE */
+/* =========================
+   SHARE VIA WHATSAPP
+========================= */
 function share(){
-  window.open("https://wa.me/?text=Someone made something special for you ❤️");
+  const n = params.get("name") || nameInput.value || "Someone";
+  const m = decodeURIComponent(params.get("msg") || msgInput.value || "Will you be mine?");
+  const link = location.href;
+  const waText = `💌 ${n}, Someone made something special for you: ${link}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`);
 }
 
-/* RESET */
-function reset(){location.href=location.pathname}
+/* =========================
+   RESET PAGE
+========================= */
+function reset(){ location.href = location.pathname; }
 
-/* ANTI COPY */
+/* =========================
+   ANTI-COPY PROTECTION
+========================= */
 document.addEventListener("contextmenu",e=>e.preventDefault());
 </script>
-
 </body>
 </html>
+
+
 
 
 
