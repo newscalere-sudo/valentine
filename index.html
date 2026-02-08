@@ -86,9 +86,14 @@ button:hover {
 
 <!-- MUSIC -->
 <audio id="music" src="music.mp3" loop></audio>
-
 <script>
 function start() {
+  document.getElementById("music").play();
+  // other logic
+}
+<script>
+function start() {
+  
   const name = document.getElementById("nameInput").value.trim();
   const message = document.getElementById("messageInput").value.trim();
 
