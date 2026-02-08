@@ -46,6 +46,14 @@ input,select{padding:12px 20px;margin:8px;width:90%;border-radius:25px;border:no
 /* LINK STYLING */
 a{color:inherit;text-decoration:none;font-size:16px;word-break:break-all}
 
+/* SENDER LINK BUTTON */
+#koreanHeartBtn{
+  font-size:60px;       /* bigger size */
+  padding:20px 40px;
+  border-radius:50px;
+  cursor:pointer;
+}
+
 /* MOBILE-FIRST SMOOTHNESS */
 @media(max-width:480px){
   .heart-btn{font-size:80px}
@@ -76,6 +84,7 @@ a{color:inherit;text-decoration:none;font-size:16px;word-break:break-all}
     <option value="music4.mp3">Lo-Fi Love</option>
     <option value="music5.mp3">Heartbeat Mood</option>
   </select>
+  <!-- Generate link button -->
   <button id="koreanHeartBtn" onclick="generateLink()">💖</button>
   <p id="linkBox"></p>
 </div>
@@ -88,14 +97,15 @@ a{color:inherit;text-decoration:none;font-size:16px;word-break:break-all}
   <p id="message">Will you be mine?</p>
   <div style="position:relative;height:150px;width:260px;margin-top:20px">
     <button class="heart-btn" onclick="yes()">♡</button>
-    <button id="no">❌</button>
+    <!-- NO BUTTON TEXT -->
+    <button id="no">NO</button>
   </div>
 </div>
 
-<!-- FOOTER ❤️ -->
+<!-- FOOTER BUTTONS -->
 <div class="footer">
-  <button onclick="share()">❤️</button>
-  <button onclick="reset()">❤️</button>
+  <button onclick="share()">WhatsApp</button>
+  <button onclick="reset()">Reset</button>
 </div>
 
 <!-- AUDIO -->
@@ -121,7 +131,7 @@ const player = document.getElementById("player");
 const no = document.getElementById("no");
 
 /* =========================
-   EMBEDDED MUSIC (BASE64)
+   EMBEDDED MUSIC (BASE64 PLACEHOLDERS)
 ========================= */
 const musicFiles = {
   "music1.mp3":"data:audio/mp3;base64,BASE64_MUSIC_1",
@@ -216,6 +226,7 @@ document.addEventListener("contextmenu",e=>e.preventDefault());
 </script>
 </body>
 </html>
+
 
 
 
