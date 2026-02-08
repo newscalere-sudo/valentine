@@ -1,119 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Be My Valentine 💖</title>
+  <meta charset="UTF-8">
+  <title>Valentine Surprise ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    font-family: Arial, sans-serif;
-    text-align: center;
-    overflow: hidden;
-    color: white;
-  }
-
-  .container {
-    margin-top: 15vh;
-  }
-
-  button {
-    padding: 14px 26px;
-    font-size: 20px;
-    margin: 10px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background: #ff3366;
-    color: white;
-  }
-
-  #result {
-    display: none;
-  }
-
-  .heart {
-    position: fixed;
-    top: -10px;
-    font-size: 24px;
-    animation: fall linear infinite;
-  }
-
-  @keyframes fall {
-    to {
-      transform: translateY(110vh);
-      opacity: 0;
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff5f9e, #ff9a9e);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
     }
-  }
-</style>
+
+    .box {
+      background: rgba(255,255,255,0.15);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff2f92;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .buttons {
+      position: relative;
+      height: 120px;
+      margin-top: 20px;
+    }
+
+    #noBtn {
+      position: absolute;
+      background: #444;
+    }
+
+    #yesBtn {
+      background: #00e676;
+      color: black;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container" id="proposal">
-  <h1 id="question"></h1>
-  <button id="yesBtn">YES 💖</button>
-  <button id="noBtn">NO 💔</button>
+<div class="box" id="step1">
+  <h2>❤️ Enter Your Details ❤️</h2>
+  <input id="name" placeholder="Your name" required>
+  <textarea id="message" placeholder="Your message" required></textarea>
+  <button onclick="start()">Continue</button>
 </div>
 
-<div class="container" id="result">
-  <h1>💘 LOVE ACCEPTED 💘</h1>
-  <p id="finalMsg"></p>
+<div class="box hidden" id="step2">
+  <h2 id="finalText"></h2>
+
+  <div class="buttons">
+    <button id="yesBtn" onclick="yesClicked()">YES 💖</button>
+    <button id="noBtn" onmouseover="moveNo()">NO 💔</button>
+  </div>
 </div>
 
-<audio id="music" src="music.mp3.mp3" loop></audio>
+<audio id="music" loop>
+  <source src="music.mp3.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const name = params.get("name") || "My Love";
-  const msg = params.get("msg") || "Will you be my Valentine? 💘";
+  function start() {
+    const name = document.getElementById("name").value.trim();
+    const message = document.getElementById("message").value.trim();
 
-  document.getElementById("question").innerText =
-    `${name}, ${msg}`;
+    if (!name || !message) {
+      alert("Please fill both fields ❤️");
+      return;
+    }
 
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
-  const music = document.getElementById("music");
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
 
-  yesBtn.addEventListener("click", () => {
-    document.getElementById("proposal").style.display = "none";
-    document.getElementById("result").style.display = "block";
-    document.getElementById("finalMsg").innerText =
-      "You just made my heart the happiest ❤️";
+    document.getElementById("finalText").innerHTML =
+      `${name}, ${message}<br><br>Will you be my Valentine? 💘`;
 
-    music.play().catch(() => {
-      alert("Tap once to allow music 🎵");
-    });
-
-    startHearts();
-  });
-
-  // Runaway NO button
-  noBtn.addEventListener("mouseenter", moveNo);
-  noBtn.addEventListener("click", moveNo);
-
-  function moveNo() {
-    noBtn.style.position = "fixed";
-    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+    document.getElementById("music").play().catch(() => {});
   }
 
-  function startHearts() {
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerText = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
-    }, 300);
+  function moveNo() {
+    const btn = document.getElementById("noBtn");
+    const x = Math.random() * 250;
+    const y = Math.random() * 80;
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+  }
+
+  function yesClicked() {
+    alert("Yay! 💕 Love accepted!");
   }
 </script>
 
 </body>
 </html>
+
 
 
