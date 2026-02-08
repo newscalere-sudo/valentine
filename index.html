@@ -12,7 +12,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:'Poppins',sans-serif;
+  font-family:Poppins,sans-serif;
   overflow:hidden;
   transition:background .8s ease;
 }
@@ -92,11 +92,12 @@ button:hover{transform:scale(1.05)}
 
 <audio id="music" loop></audio>
 
-<!-- SETUP -->
+<!-- SETUP SCREEN -->
 <div class="card" id="setup">
   <h1>Create Your Love Link 💌</h1>
-  <input id="name" placeholder="Their Name">
-  <input id="msg" placeholder="Your Message">
+
+  <input id="name" placeholder="Their Name" required>
+  <input id="msg" placeholder="Your Message" required>
 
   <select id="theme">
     <option value="blush">Blush Love</option>
@@ -117,47 +118,67 @@ button:hover{transform:scale(1.05)}
   <button onclick="generate()">Generate Link 💖</button>
 </div>
 
-<!-- PROPOSAL -->
+<!-- PROPOSAL SCREEN -->
 <div class="card" id="proposal" style="display:none">
   <h1 id="text"></h1>
+
   <button id="yes" onclick="accept()">YES 💘</button>
   <button id="no" onmouseover="runAway()">NO 😜</button>
 
   <div class="share" id="share">
     <a id="wa" target="_blank">Share on WhatsApp 💬</a>
   </div>
+
+  <button onclick="resetPage()">Create New 💖</button>
 </div>
 
 <script>
-const p=new URLSearchParams(location.search);
+const params=new URLSearchParams(window.location.search);
+const setup=document.getElementById("setup");
+const proposal=document.getElementById("proposal");
+const text=document.getElementById("text");
+const music=document.getElementById("music");
 
-if(p.get("name")){
+/* LOAD FROM URL */
+if(params.has("name") && params.has("msg")){
   setup.style.display="none";
   proposal.style.display="block";
-  document.body.className=p.get("theme");
-  text.innerText=p.get("name")+",\n"+p.get("msg");
-  music.src=p.get("music");
+
+  document.body.className=params.get("theme") || "blush";
+  text.innerText=params.get("name")+",\n"+params.get("msg");
+
+  music.src=params.get("music");
   document.body.addEventListener("click",()=>music.play(),{once:true});
 }
 
+/* GENERATE LINK */
 function generate(){
+  if(!name.value || !msg.value){
+    alert("Please fill name and message 💖");
+    return;
+  }
+
   const url=
     location.origin+location.pathname+
     "?name="+encodeURIComponent(name.value)+
     "&msg="+encodeURIComponent(msg.value)+
     "&theme="+theme.value+
     "&music="+musicSelect.value;
-  location.href=url;
+
+  window.location.href=url;
 }
 
+/* YES */
 function accept(){
   music.play();
-  hearts();
+  startHearts();
   share.style.display="block";
-  wa.href="https://wa.me/?text="+encodeURIComponent("Open this 💖\n"+location.href);
+  wa.href="https://wa.me/?text="+
+    encodeURIComponent("Open this 💖\n"+location.href);
 }
 
-function hearts(){
+/* HEARTS */
+function startHearts(){
   setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
@@ -170,9 +191,15 @@ function hearts(){
   },250);
 }
 
+/* NO BUTTON */
 function runAway(){
   no.style.left=Math.random()*200-100+"px";
   no.style.top=Math.random()*200-100+"px";
+}
+
+/* RESET */
+function resetPage(){
+  window.location.href=location.origin+location.pathname;
 }
 
 /* BASIC ANTI-COPY */
@@ -184,6 +211,7 @@ document.addEventListener("keydown",e=>{
 
 </body>
 </html>
+
 
 
 
